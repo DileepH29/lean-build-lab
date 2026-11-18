@@ -42,7 +42,7 @@ function Network() {
     const pts: number[] = [];
     nodes.forEach((n, i) => {
       pts.push(0, 0, 0, n.x, n.y, n.z);
-      const m = nodes[(i + 3) % nodes.length];
+      const m = nodes[(i + 3) % nodes.length]!;
       pts.push(n.x, n.y, n.z, m.x, m.y, m.z);
     });
     const g = new THREE.BufferGeometry();

@@ -14,7 +14,7 @@ const SAMPLES = [
 
 export const Route = createFileRoute("/verify")({
   validateSearch: (s: Record<string, unknown>): { sample?: number } => {
-    const n = Number(s.sample);
+    const n = Number(s["sample"]);
     return Number.isInteger(n) && n >= 1 && n <= SAMPLES.length ? { sample: n } : {};
   },
   head: () => ({
