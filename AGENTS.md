@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Citation verification runs in `src/lib/verify.server.ts` behind the `runVerification` server function; source records come only from OpenAlex/Crossref and quoted evidence is filtered to verbatim substrings of the source — why: the product must never fabricate citations or passages.
+- The 3D hero (`src/components/HeroScene.tsx`) is lazy-loaded after mount — why: keeps three.js out of SSR and the initial bundle.
