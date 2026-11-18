@@ -149,7 +149,7 @@ export async function verifyClaim(claim: string, doi: string): Promise<VerifyRes
   return judge(claim, source, [{ label: "Abstract", text: source.abstract }], "abstract");
 }
 
-export async function verifyClaimAgainstPdf(claim: string, doi: string | undefined, pdf: { title?: string; pages: string[] }): Promise<VerifyResponse> {
+export async function verifyClaimAgainstPdf(claim: string, doi: string | undefined, pdf: { title?: string | undefined; pages: string[] }): Promise<VerifyResponse> {
   let source: SourceRecord | null = doi ? await fetchSource(doi) : null;
   source = {
     title: source?.title ?? pdf.title ?? "Uploaded PDF",

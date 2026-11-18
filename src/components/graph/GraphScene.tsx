@@ -29,7 +29,7 @@ function Node({ n, p, selected, dim, onSelect }: { n: GNode; p: THREE.Vector3; s
   const ref = useRef<THREE.Mesh>(null);
   const [hover, setHover] = useState(false);
   const size = n.kind === "center" ? 0.55 : n.kind === "claim" ? 0.32 : 0.12 + Math.min(0.32, Math.log10(n.cited + 1) * 0.07);
-  const color = COLORS[n.kind === "claim" ? n.status ?? "claim" : n.kind];
+  const color = COLORS[n.kind === "claim" ? n.status ?? "claim" : n.kind] ?? "#ffffff";
   useFrame((s) => {
     if (ref.current && (selected || n.kind === "center")) ref.current.scale.setScalar(1 + Math.sin(s.clock.elapsedTime * 2.5) * 0.08);
   });
@@ -54,7 +54,7 @@ function Node({ n, p, selected, dim, onSelect }: { n: GNode; p: THREE.Vector3; s
   );
 }
 
-function Edges({ data, pos, claim, focus }: { data: GraphData; pos: Map<string, THREE.Vector3>; claim?: GNode; focus: Set<string> | null }) {
+function Edges({ data, pos, claim, focus }: { data: GraphData; pos: Map<string, THREE.Vector3>; claim?: GNode | undefined; focus: Set<string> | null }) {
   const geo = useMemo(() => {
     const arr: number[] = [];
     const col: number[] = [];
@@ -83,7 +83,7 @@ function Edges({ data, pos, claim, focus }: { data: GraphData; pos: Map<string, 
       <lineSegments geometry={geo}><lineBasicMaterial vertexColors transparent opacity={0.9} /></lineSegments>
       {claimLine && claim && (
         <lineSegments geometry={claimLine}>
-          <lineDashedMaterial color={COLORS[claim.status ?? "claim"]} dashSize={0.15} gapSize={0.1} />
+          <lineDashedMaterial color={COLORS[claim.status ?? "claim"] ?? "#ffffff"} dashSize={0.15} gapSize={0.1} />
         </lineSegments>
       )}
     </>
@@ -91,7 +91,7 @@ function Edges({ data, pos, claim, focus }: { data: GraphData; pos: Map<string, 
 }
 
 export default function GraphScene({ data, claim, selected, onSelect, match, show }: {
-  data: GraphData; claim?: GNode; selected: string | null; onSelect: (n: GNode | null) => void; match: string; show: { reference: boolean; citing: boolean };
+  data: GraphData; claim?: GNode | undefined; selected: string | null; onSelect: (n: GNode | null) => void; match: string; show: { reference: boolean; citing: boolean };
 }) {
   const pos = useMemo(() => layout(data, claim), [data, claim]);
   const all = claim ? [...data.nodes, claim] : data.nodes;
